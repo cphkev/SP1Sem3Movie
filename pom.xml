@@ -8,63 +8,69 @@
     <artifactId>SP1Sem3Movie</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-
-        <hibernate-version>6.2.4.Final</hibernate-version>
-        <junit.version>5.9.1</junit.version>
-
+        <hibernate.version>6.2.4.Final</hibernate.version>
+        <postgresql.version>42.7.2</postgresql.version>
+        <lombok.version>1.18.28</lombok.version>
     </properties>
-
+    <!--        DATABASE-->
+    <!--        https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/The-JPA-and-Hibernate-CRUD-operations-example-->
     <dependencies>
-
-        <!--  DB    -->
-
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.6.0</version>
-        </dependency>
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>${hibernate-version}</version>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <!--        &lt;!&ndash;        https://www.postgresqltutorial.com/postgresql-getting-started/&ndash;&gt;-->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
         </dependency>
 
-        <!--  LOMBOK    -->
-
+        <!--        https://www.baeldung.com/intro-to-project-lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.28</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
-
-        <!--  TESTING      -->
-
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
+            <version>5.11.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>jdbc</artifactId>
+            <version>1.17.3</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.13.0</version> <!-- or the latest version -->
         </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.15.0</version> <!-- or the latest version -->
+        </dependency>
+
+
+
     </dependencies>
-
-
-
 </project>
