@@ -128,23 +128,6 @@ public class MovieService {
         return movies;
     }
 
-    /*
-        public static void main (String[]args){
-                MovieService movieService = new MovieService();
-                try {
-                   List<MovieDTO> movies = movieService.getMoviesByRating(7.5, 8.0);
-                    movies.forEach(System.out::println);
-                    } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        }
-    */
-
-
-
 
     public static void main(String[] args) {
         MovieService movieService = new MovieService();
