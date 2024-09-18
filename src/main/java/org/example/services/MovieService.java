@@ -4,7 +4,14 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import org.example.daos.GenreDAO;
+import org.example.daos.MovieDAO;
+import org.example.dtos.GenreDTO;
 import org.example.dtos.MovieDTO;
+import org.example.entities.Genre;
+import org.example.entities.Movie;
 
 import java.io.IOException;
 import java.net.URI;
@@ -14,7 +21,9 @@ import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Daniel Rouvillain
@@ -127,6 +136,38 @@ public class MovieService {
 
         return movies;
     }
+
+        //No sure this works copilot made it
+    public static List<MovieDTO> createMovies(List<MovieDTO> movieDTOs, EntityManagerFactory emf) {
+        MovieDAO movieDAO = MovieDAO.getInstance(emf);
+        GenreDAO genreDAO = GenreDAO.getInstance(emf);
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+            for (MovieDTO movieDTO : movieDTOs) {
+                Movie movie = new Movie(movieDTO.getTitle(), movieDTO.getOverview(), movieDTO.getLowerRating(), movieDTO.getUpperRating());
+
+                Set<Genre> genres = new HashSet<>();
+                for (GenreDTO genreDTO : movieDTO.getGenres()) {
+                    Genre genre = genreDAO.findByApiId(genreDTO.getId());
+                    if (genre != null) {
+                        genres.add(genre);
+                    }
+                }
+                movie.setGenres(genres);
+                movieDAO.create(movie);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            em.close();
+        }
+
+        return movieDTOs;
+    }
+
 
 
     public static void main(String[] args) {
