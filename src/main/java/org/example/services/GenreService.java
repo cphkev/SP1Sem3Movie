@@ -1,11 +1,14 @@
 package org.example.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 import org.example.config.HibernateConfig;
 import org.example.daos.GenreDAO;
 import org.example.dtos.GenreDTO;
 import org.example.dtos.MovieDTO;
+import org.example.entities.Genre;
 
 
 import java.io.IOException;
@@ -69,28 +72,81 @@ public class GenreService {
         return genreDTO = genreDAO.create(genreDTO);
 
     }
+//This is the method that creates the genres in the database (Original)
+    public static List<GenreDTO> createGenreByList(List<GenreDTO> genres, EntityManagerFactory emf) {
+
+        GenreDAO genreDAO = GenreDAO.getInstance(emf);
+
+        EntityManager em = emf.createEntityManager();
+
+        try{
+
+            em.getTransaction().begin();
+            for (GenreDTO genre : genres) {
+                genreDAO.create(genre);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            em.close();
+        }
 
 
+        return genres;
+    }
+//Not sure this works made with copilot
+    public static List<GenreDTO> createGenreByListWithAPIID(List<GenreDTO> genres, EntityManagerFactory emf) {
+        GenreDAO genreDAO = GenreDAO.getInstance(emf);
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+            for (GenreDTO genreDTO : genres) {
+                Genre genre = genreDAO.findByApiId(genreDTO.getId());
+                if (genre == null) {
+                    genre = new Genre(genreDTO);
+                    genreDAO.createGenreWithoutDTO(genre);
+                }
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            em.close();
+        }
+
+        return genres;
+    }
 
     public static void main(String[] args) {
-/*
+
         MovieService movieService = new MovieService();
 
 
+
+        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory("sp1movie");
         List<GenreDTO> genreList = fetchMovieGenres();
+       createGenreByList(genreList, emf);
+
         // List<MovieDTO> danishMovies = movieService.getDanishMovies();
 
-        System.out.println("Genres:");
-        genreList.forEach(System.out::println);
 
+
+
+        // Persist the genres into the database
+
+/*
         System.out.println("\nDanish Movies:");
         // danishMovies.forEach(System.out::println);
 
 
  */
 
-        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory("sp1movie");
-        GenreDTO genreDTO = createGenre(1, "Action", emf);
+       // EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory("sp1movie");
+        //GenreDTO genreDTO = createGenre(1, "Action", emf);
+
+
 
 
     }

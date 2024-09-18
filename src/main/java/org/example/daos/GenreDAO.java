@@ -2,6 +2,7 @@ package org.example.daos;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.NoResultException;
 import org.example.dtos.GenreDTO;
 import org.example.entities.Genre;
 
@@ -39,6 +40,31 @@ public class GenreDAO {
             em.getTransaction().commit();
         }
         return new GenreDTO(genre);
+    }
+
+    public GenreDTO createGenreWithoutDTO(Genre genreEntity) {
+        Genre genre = new Genre(genreEntity);
+
+        try(EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            em.merge(genre);
+            em.getTransaction().commit();
+        }
+        return new GenreDTO(genre);
+    }
+
+//Not sure this works copilot made it
+    public Genre findByApiId(int apiId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery("SELECT g FROM Genre g WHERE g.apiId = :apiId", Genre.class)
+                    .setParameter("apiId", apiId)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
     }
 
 
