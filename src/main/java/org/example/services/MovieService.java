@@ -101,6 +101,12 @@ public class MovieService {
                         movie.setReleaseDate(LocalDate.parse(movieNode.get("release_date").asText()));
                     }
 
+                    if (movieNode.has("vote_average") && !movieNode.get("vote_average").isNull()) {
+                        movie.setAverageRating(movieNode.get("vote_average").asDouble());
+                    } else {
+                        movie.setAverageRating(0.0);
+                    }
+
                     Set<GenreDTO> genres = fetchMovieGenres(movieNode.get("id").asInt());
                     movie.setGenres(genres);
 

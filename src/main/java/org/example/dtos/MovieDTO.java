@@ -22,4 +22,9 @@ public class MovieDTO {
     private Set<GenreDTO> genres;
     private DirectorDTO director;
 
+
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
+    }
+
 }
