@@ -1,44 +1,47 @@
 package org.example.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Set;
 
-@Data
+@Setter
+@Getter
 @Entity
 @Table(name = "movies")
 public class Movie {
+
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "title", nullable = false)
     private String title;
-
-    @Column(name = "overview", nullable = false)
+    @Column(name = "overview", nullable = false, length = 2000)
     private String overview;
+    private LocalDate releaseDate;
+    private Double averageRating;
+    private Double popularity;
 
-    @Column(name = "lower_rating", nullable = false)
-    private double lowerRating;
-
-    @Column(name = "upper_rating", nullable = false)
-    private double upperRating;
-
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "movie_genre",
+            name = "movie_actors",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "actor_id")
+    )
+    private Set<Actor> actors;
+
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "director_id")
+    private Director director;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "movie_genres",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
     private Set<Genre> genres;
-    public Movie() {
-    }
-    public Movie(String title, String overview, double lowerRating, double upperRating) {
-        this.title = title;
-        this.overview = overview;
-        this.lowerRating = lowerRating;
-        this.upperRating = upperRating;
-    }
+
 }

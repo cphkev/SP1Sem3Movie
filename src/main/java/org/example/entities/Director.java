@@ -9,15 +9,12 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "genres")
-public class Genre {
-
+@Table(name = "directors")
+public class Director {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private int id;
     private String name;
-
-    @ManyToMany(mappedBy = "genres", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "director",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Movie> movies;
-
 }

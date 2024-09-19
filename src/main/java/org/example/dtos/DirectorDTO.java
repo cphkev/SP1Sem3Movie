@@ -1,12 +1,11 @@
 package org.example.dtos;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-@Getter
 @Setter
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
 public class DirectorDTO {
+
     private String name;
 }
