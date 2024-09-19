@@ -44,4 +44,8 @@ public class Movie {
     )
     private Set<Genre> genres;
 
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
+    }
+
 }
