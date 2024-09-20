@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
+
 public class MovieService {
 
     private static final String API_KEY = System.getenv("API_KEY");
@@ -44,12 +46,12 @@ public class MovieService {
         Movie movie = movieDAO.getMovieById(id);
         return convertToDTO(movie);
     }
-
     public MovieDTO addMovie(MovieDTO movieDTO) {
         Movie movie = convertToEntity(movieDTO);
         movieDAO.saveMovie(movie);
         return convertToDTO(movie);
     }
+
     public void deleteMovie(int id) {
 
         movieDAO.deleteMovie(id);
@@ -205,7 +207,7 @@ public class MovieService {
         return director;
     }
 
-    private MovieDTO convertToDTO(Movie movie) {
+    public MovieDTO convertToDTO(Movie movie) {
         MovieDTO dto = new MovieDTO();
         dto.setTitle(movie.getTitle());
         dto.setOverview(movie.getOverview());
@@ -233,7 +235,7 @@ public class MovieService {
         return dto;
     }
 
-    private Movie convertToEntity(MovieDTO dto) {
+    public Movie convertToEntity(MovieDTO dto) {
         Movie movie = new Movie();
         movie.setTitle(dto.getTitle());
         movie.setOverview(dto.getOverview());
