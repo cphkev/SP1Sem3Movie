@@ -2,14 +2,20 @@ package org.example.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.example.entities.Movie;
 
 import java.io.IOException;
 import java.util.List;
 
 public class JsonService {
+
+
+
+
     public static String convertObjectToJson(Object object) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -40,4 +46,6 @@ public class JsonService {
         // Use TypeReference to handle List<T>
         return mapper.readValue(json, new TypeReference<List<T>>() {});
     }
+
+
 }
